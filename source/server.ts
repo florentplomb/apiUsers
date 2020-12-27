@@ -3,13 +3,24 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import logging from './config/logging';
 import config from './config/config';
-import sampleRoute from './routes/sample';
+import mongosse from 'mongoose';
+import userRoutes from './routes/user';
 
 /**
  * This file is basically a "middlewar" we use express as middlewar
  */
 const NAMESPACE = 'Server';
 const router = express();
+
+/** Connect to Mongo */
+mongosse
+    .connect(config.mongo.url, config.mongo.options)
+    .then((result) => {
+        logging.info(NAMESPACE, 'Connect to MongoDB');
+    })
+    .catch((error) => {
+        logging.info(NAMESPACE, error.message, error);
+    });
 
 /** Logging the request */
 router.use((req, res, next) => {
@@ -48,7 +59,7 @@ router.use((req, res, next) => {
 
 /** Routes */
 
-router.use('/sample', sampleRoute);
+router.use('/users', userRoutes);
 
 /** Error Handling */
 router.use((req, res, next) => {
