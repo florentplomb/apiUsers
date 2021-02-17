@@ -4,7 +4,6 @@ import bcryptjs from 'bcryptjs';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import signJWT from '../functions/signJWT';
-import user from '../models/user';
 
 const NAMESPACE = 'User';
 
